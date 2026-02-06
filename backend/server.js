@@ -18,13 +18,24 @@ app.get('/', (req, res) => {
 });
 
 // Rota temporária para criar admin em produção
-const createAdminScript = require('./create_admin_logic'); // Vamos extrair a lógica
+const createAdminScript = require('./create_admin_logic');
 app.get('/setup-admin', async (req, res) => {
     try {
         await createAdminScript();
         res.send('Admin criado/atualizado com sucesso! Tente logar agora.');
     } catch (error) {
         res.status(500).send('Erro ao criar admin: ' + error.message);
+    }
+});
+
+// Rota de Inicialização do Banco (Cria Tabela e popula)
+const setupDbScript = require('./setup_db_logic');
+app.get('/init-db', async (req, res) => {
+    try {
+        const message = await setupDbScript();
+        res.send(message);
+    } catch (error) {
+        res.status(500).send('Erro ao inicializar banco: ' + error.message);
     }
 });
 
