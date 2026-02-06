@@ -29,12 +29,15 @@ app.get('/setup-admin', async (req, res) => {
 });
 
 // Rota de Inicialização do Banco (Cria Tabela e popula)
+// Rota de Inicialização do Banco (Cria Tabela e popula)
 const setupDbScript = require('./setup_db_logic');
-app.get('/init-db', async (req, res) => {
+app.get('/initialize-db', async (req, res) => {
+    console.log('Recebida requisição para inicializar o DB');
     try {
         const message = await setupDbScript();
         res.send(message);
     } catch (error) {
+        console.error('Erro na inicialização:', error);
         res.status(500).send('Erro ao inicializar banco: ' + error.message);
     }
 });
